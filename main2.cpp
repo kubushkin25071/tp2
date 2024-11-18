@@ -2,13 +2,12 @@
 #include <fstream>
 #include <sstream>
 #include <string>
-#include <cctype>
 
 using namespace std;
 
 int main() {
+	system("cls");
 	setlocale(LC_ALL, "Russian");
-	int count = 0;
 	ifstream in;       // поток для чтения
 	in.open("test2.txt"); // окрываем файл для чтения
 
@@ -17,30 +16,25 @@ int main() {
 		return 0;
 	}
 
-	string line, line_out;
+	string line;
 	string vowels = "aeiouyAEIOUY";
 
 	while (getline(in, line)) {		// читаем до конца файла и считываем построчно
-		ostringstream ss(line);
-		for (auto i = line.begin(); i != line.end(); i++) {
-			cout << *i;
-		}		// вывод на экран
-		bool start = false;
-		cout << endl;
-		/*for (int i = 0; i < line.size(); i++) {	// посимвольная обработка строки
-			char s = line(i);	
-			if (vowels.find_first_of(s) == -1) {
-
-			}
-			
-			else {
-				// если начало слова
-				if (i==0 || line(i-1) == ' ')
-			}*/
+		stringstream s;
+		for (int i = 0; i < line.size(); i++) {
+			char c = line[i];
+			if (('A' <= c && c <= 'Z') || ('a' <= c && c <= 'z') || c == ' ') s.put(c);
+			else continue;
 		}
-		//ostringstream ss(line);
 
-		
+		string word;
+		while (s >> word) {
+			char first = word[0];
+			char last = word[word.size()-1];
+			if (vowels.find_first_of(last) != -1 && vowels.find_first_of(first) != -1) cout << word << ' ' << word.size() << endl;
+			}
+		cout << endl;
+		}
 	in.close();
 	return 0;
 }
