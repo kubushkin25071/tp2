@@ -1,2 +1,2 @@
 all:
-	g++ main1.cpp route.cpp keeper.cpp -o a
+	g++ main1.cpp route.cpp keeper.cpp check.cpp -o a
