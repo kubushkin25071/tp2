@@ -1,7 +1,5 @@
 #include "keeper.h"
 
-void display_add_menu();
-
 Keeper::Keeper() : head(nullptr), tail(nullptr), count(0) {
     cout << "Вызван конструктор без параметров для Keeper класса\n";
 }
@@ -71,141 +69,34 @@ int Keeper::get_count() {
 
 // добавление в начало
 Keeper& Keeper::operator++() {
-    int add_choice = -1;
-    while (add_choice != 0) {
-        display_add_menu();
-        add_choice = check_input();
-
-        // если добавляем инструмент
-        if (add_choice >= 1 && add_choice <= 3) {
-            string name;
-            int count;
-            string fio;
-            int cost;
-            cout << "Введите название инструмента: ";
-            getline(cin, name);
-            cout << "Введите владельца инструмента: ";
-            getline(cin, fio);
-            cout << "Введите колличество инструмента: ";
-            count = check_input();
-            cout << "Введите стоимость инструмента: ";
-            cost = check_input();
-
-            // если струнный инструмент
-            if (add_choice == 1) {
-                string producer;	// производитель
-                string description;	// краткое описание
-                cout << "Введите производителя инструмента: ";
-                getline(cin, producer);
-                cout << "Введите краткое описание инструмента: ";
-                getline(cin, description);
-                String* instrument = new String(producer, description, name, count, fio, cost);
-                add_to_start(instrument);
-            }
-
-            // если ударный инструмент
-            else if (add_choice == 2) {
-                string type_d;	// тип барабана
-                cout << "Введите тип ударного инструмента: ";
-                getline(cin, type_d);
-                Drum* instrument = new Drum(type_d, name, count, fio, cost);
-                add_to_start(instrument);
-            }
-
-            // если духовой инструмент 
-            else {
-                string producer;		// производитель
-                string defects;			// дефекты
-                cout << "Введите производителя инструмента: ";
-                getline(cin, producer);
-                cout << "Введите дефекты инструмента: ";
-                getline(cin, defects);
-                Brass* instrument = new Brass(producer, defects, name, count, fio, cost);
-                add_to_start(instrument);
-            }
-        }
-
-        // на выход
-        else if (add_choice == 0) {
-            break;
-        }
-
-        // ошибочный ввод
-        else {
-            cout << "Введите корректное значение" << endl;
-            continue;
-        }
-    }
+    string first_point;
+    string last_point;
+    int number;
+    cout << "Введите название инструмента: ";
+    getline(cin, first_point);
+    cout << "Введите владельца инструмента: ";
+    getline(cin, last_point);
+    cout << "Введите колличество инструмента: ";
+    number = check_input();
+    Route* train = new Route(number, first_point, last_point);
+    add_to_start(train);
     return *this;
 }
 
 // добавление в конец
 Keeper& operator++(Keeper& K, int) {
-    int add_choice = -1;
-    while (add_choice != 0) {
-        display_add_menu();
-        add_choice = check_input();
 
-        // если добавляем инструмент
-        if (add_choice >= 1 && add_choice <= 3) {
-            string name;    // название
-            int count;      // число
-            string fio;     // владелец
-            int cost;       // стоимость
-            cout << "Введите название инструмента: ";
-            getline(cin, name);
-            cout << "Введите владельца инструмента: ";
-            getline(cin, fio);
-            cout << "Введите колличество инструмента: ";
-            count = check_input();
-            cout << "Введите стоимость инструмента: ";
-            cost = check_input();
-
-            // если струнный инструмент
-            if (add_choice == 1) {
-                string producer;	// производитель
-                string description;	// краткое описание
-                cout << "Введите производителя инструмента: ";
-                getline(cin, producer);
-                cout << "Введите краткое описание инструмента: ";
-                getline(cin, description);
-                String* instrument = new String(producer, description, name, count, fio, cost);
-                K.add(instrument);
-            }
-
-            // если ударный инструмент
-            else if (add_choice == 2) {
-                string type_d;	// тип барабана
-                cout << "Введите тип ударного инструмента: ";
-                getline(cin, type_d);
-                Drum* instrument = new Drum(type_d, name, count, fio, cost);
-                K.add(instrument);
-            }
-
-            // если духовой инструмент 
-            else {
-                string producer;		// производитель
-                string defects;			// дефекты
-                cout << "Введите производителя инструмента: ";
-                getline(cin, producer);
-                cout << "Введите дефекты инструмента: ";
-                getline(cin, defects);
-                Brass* instrument = new Brass(producer, defects, name, count, fio, cost);
-                K.add(instrument);
-            }
-        }
-
-        // на выход
-        else if (add_choice == 0) {
-            break;
-        }
-
-        // ошибочный ввод
-        else {
-            cout << "Введите корректное значение" << endl;
-            continue;
-        }
-    }
+    string first_point;
+    string last_point;
+    int number;
+    cout << "Введите название инструмента: ";
+    getline(cin, first_point);
+    cout << "Введите владельца инструмента: ";
+    getline(cin, last_point);
+    cout << "Введите колличество инструмента: ";
+    number = check_input();
+    Route* train = new Route(number, first_point, last_point);
+    K.add(train);
     return K;
 }
 
@@ -230,7 +121,7 @@ Keeper& operator--(Keeper& K) {
     return K;
 }
 
-// удаление в конец
+// удаление в концe
 Keeper& Keeper::operator--(int) {
     if (this->count == 0) {
         cout << "Данных нет. Невозможно удалить с конца" << endl;
@@ -344,35 +235,17 @@ void Keeper::load_from_file(const string& filename) {
             marker.pop_back();
         }
 
-        Orchestra* mover = nullptr;
-
-
-        if (marker == "String") {
-            mover = new String();
-        }
-        else if (marker == "Drum") {
-            mover = new Drum();
-        }
-        else if (marker == "Brass") {
-            mover = new Brass();
-        }
-        else {
-            cerr << "Неизвестный тип объекта: " << marker << endl;
-            continue;
-        }
-
-        if (mover) {
-            mover->load_from_file(in);
-            cout << "Объект добавлен в контейнер" << endl;
-            this->add(mover);
-        }
+        Route* mover;
+        mover->load_from_file(in);
+        cout << "Объект добавлен в контейнер" << endl;
+        this->add(mover);
     }
 
     in.close();
 }
 
 // добавление элемента в список
-void Keeper::add(Orchestra* mover) {
+void Keeper::add(Route* mover) {
     Element* newElement = new Element;
     newElement->data = mover;
     newElement->next = nullptr;
@@ -389,7 +262,7 @@ void Keeper::add(Orchestra* mover) {
 }
 
 // Добавление элемента в начало
-void Keeper::add_to_start(Orchestra* mover) {
+void Keeper::add_to_start(Route* mover) {
     Element* newElement = new Element;
     newElement->data = mover;
     newElement->next = head;
@@ -402,12 +275,18 @@ void Keeper::add_to_start(Orchestra* mover) {
     count++;
 }
 
-// добавление элемента
-void display_add_menu() {
-    cout << "\n--- Добавить инструмент ---" << endl;
-    cout << "1 - Струнный " << endl;
-    cout << "2 - Ударный" << endl;
-    cout << "3 - Духовой" << endl;
-    cout << "0 - Назад" << endl;
-    cout << "Выберите действие: ";
+// Сортировка
+
+void Keeper::sort_trains_by_number() {
+    if (count < 2) return;
+
+    for (Element* i = head; i != nullptr; i = i->next) {
+        for (Element* j = head; j->next != nullptr; j = j->next) {
+            if (j->data->getNumber() > j->next->data->getNumber()) {
+                Route* temp = j->data;
+                j->data = j->next->data;
+                j->next->data = temp;
+            }
+        }
+    }
 }

@@ -4,7 +4,7 @@ Route::Route() {
     cout << "Вызван конструктор без параметров для Base класса\n";
 } // конструктор без параметров
 
-Route::Route(const int& number, const string& first_point, const string& last_point) : number(number), first_point(first_point), last_point(last_point) {
+Route::Route(const int& number, const string& first_point, const string& last_point): number(number), first_point(first_point), last_point(last_point) {
     cout << "Вызван конструктор с параметрами для Base класса\n";
 } //конструктор с параметрами
 

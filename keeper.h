@@ -49,4 +49,5 @@ public:
     void save_to_file(const string& filename);
     void load_from_file(const string& filename);
 
+    void sort_trains_by_number();
 };
