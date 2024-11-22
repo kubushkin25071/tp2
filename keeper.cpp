@@ -72,12 +72,19 @@ Keeper& Keeper::operator++() {
     string first_point;
     string last_point;
     int number;
-    cout << "Введите название инструмента: ";
+    while (true) {
+        cout << "Введите номер маршрута: ";
+        number = check_input();
+        int flag = show_element(number);
+        if (flag == 0) break;
+        else {
+            cout << "Маршрут с таким номером существует!" << endl;
+        }
+    }
+    cout << "Введите начальный пункт: ";
     getline(cin, first_point);
-    cout << "Введите владельца инструмента: ";
+    cout << "Введите конечный пункт: ";
     getline(cin, last_point);
-    cout << "Введите колличество инструмента: ";
-    number = check_input();
     Route* train = new Route(number, first_point, last_point);
     add_to_start(train);
     return *this;
@@ -89,12 +96,20 @@ Keeper& operator++(Keeper& K, int) {
     string first_point;
     string last_point;
     int number;
-    cout << "Введите название инструмента: ";
+    while(true){
+        cout << "Введите номер маршрута: ";
+        number = check_input();
+        int flag = K.show_element(number);
+        if (flag == 0) break;
+        else {
+            cout << "Маршрут с таким номером существует!" << endl;
+        }
+    }
+    
+    cout << "Введите начальный пункт: ";
     getline(cin, first_point);
-    cout << "Введите владельца инструмента: ";
+    cout << "Введите начальный пункт: ";
     getline(cin, last_point);
-    cout << "Введите колличество инструмента: ";
-    number = check_input();
     Route* train = new Route(number, first_point, last_point);
     K.add(train);
     return K;
@@ -149,26 +164,20 @@ Keeper& Keeper::operator--(int) {
 
 // удаление конкретного элемента
 Keeper& Keeper::delete_element(int n) {
-    if (n < 1 || n > count) {
-        cout << "Неправильный индекс элемента" << endl;
-        return *this;
-    }
-
-    if (n == 1) {
-        this->operator--(0);
-        return *this;
-    }
 
     Element* temp = head;
-    for (int i = 1; i < n - 1; i++) {
+    Element* temp1;
+
+    while (temp->data->getNumber() != n) {
+        temp1 = temp;
         temp = temp->next;
     }
 
-    Element* toDelete = temp->next;
-    temp->next = toDelete->next;
+    Element* toDelete = temp;
+    temp1->next = toDelete->next;
 
     if (toDelete == tail) {
-        tail = temp;
+        tail = temp1;
     }
 
     delete toDelete->data;
@@ -180,18 +189,17 @@ Keeper& Keeper::delete_element(int n) {
 
 // изменение информации конкретного элемента
 Keeper& Keeper::edit_element(int n) {
-    if (n < 1 || n > count) {
-        cout << "Неправильный индекс элемента" << endl;
-        return *this;
-    }
 
     Element* temp = head;
-    for (int i = 1; i < n; i++) {
+    while(temp->data->getNumber()!=n) {
         temp = temp->next;
     }
 
     if (temp->data) {
         temp->data->change_info();
+        if (temp->data->getNumber() != n){
+            this->sort_trains_by_number();
+        }
     }
     else {
         cout << "Данных нет" << endl;
@@ -235,10 +243,18 @@ void Keeper::load_from_file(const string& filename) {
             marker.pop_back();
         }
 
-        Route* mover;
-        mover->load_from_file(in);
-        cout << "Объект добавлен в контейнер" << endl;
-        this->add(mover);
+        Route* mover = nullptr;
+        if (marker == "-1") mover = new Route();
+        else {
+            cerr << "Неизвестный тип объекта: " << marker << endl;
+            continue;
+        }
+
+        if (mover) {
+            mover->load_from_file(in);
+            cout << "Объект добавлен в контейнер" << endl;
+            this->add(mover);
+        }
     }
 
     in.close();
@@ -289,4 +305,17 @@ void Keeper::sort_trains_by_number() {
             }
         }
     }
+}
+
+// изменение информации конкретного элемента
+int Keeper::show_element(int n) {
+
+    for (Element* i = head; i != nullptr; i = i->next) {
+        if (i->data->getNumber() == n) {
+            i->data->display();
+            return 1;
+        }
+    }
+    cout << "Данных нет" << endl;
+    return 0;
 }

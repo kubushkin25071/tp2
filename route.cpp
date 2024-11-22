@@ -87,12 +87,12 @@ void Route::change_info() {
 }
 
 void Route::save_to_file(ostream& out) {
-    out << number << '\n';
-    out << first_point << '\n' << last_point << '\n';
+    out << "-1" << '\n';
+    out << first_point << '\n' << last_point << '\n' << number << '\n';
 }
 
 void Route::load_from_file(istream& in) {
-    in >> number;
     getline(in, first_point);
     getline(in, last_point);
+    in >> number;
 }

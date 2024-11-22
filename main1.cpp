@@ -8,7 +8,7 @@ void display_main_menu() {
     cout << "Все добавления и удаления элементов сопровождаются последующей сортировкой. \n " << endl;
     cout << "1 - Добавить новый маршрут в конец" << endl;
     cout << "2 - Добавить новый маршрут в начало" << endl;
-    cout << "3 - Удалить маршрут по индексу" << endl;
+    cout << "3 - Удалить маршрут по номеру" << endl;
     cout << "4 - Удалить маршрут c конца" << endl;
     cout << "5 - Удалить маршрут c начала" << endl;
     cout << "6 - Редактировать маршрут" << endl;
@@ -45,7 +45,6 @@ int main() {
                 cout << "Введите номер маршрута для удаления: ";
                 int index = check_input();
                 keeper.delete_element(index);
-                keeper.sort_trains_by_number();
                 break;
             }
             case 4: {
@@ -67,7 +66,7 @@ int main() {
                 break;
             case 8: {
                 try {
-                    keeper.save_to_file("out.csv");
+                    keeper.save_to_file("out.txt");
                 }
                 catch (const runtime_error& e) {
                     cerr << "Ошибка при сохранении файла: " << e.what() << endl;
@@ -76,11 +75,17 @@ int main() {
             }
             case 9: {
                 try {
-                    keeper.load_from_file("in.csv");
+                    keeper.load_from_file("in.txt");
                 }
                 catch (const runtime_error& e) {
                     cerr << "Ошибка при загрузке файла: " << e.what() << endl;
                 }
+                break;
+            }
+            case 10: {
+                cout << "Введите номер маршрута для отображения: ";
+                int index = check_input();
+                keeper.show_element(index);
                 break;
             }
             case 0:

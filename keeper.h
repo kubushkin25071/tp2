@@ -47,7 +47,11 @@ public:
 
     //сохранение в файл
     void save_to_file(const string& filename);
+    // загрузка из фалйа
     void load_from_file(const string& filename);
 
+    // сортировка элементов
     void sort_trains_by_number();
+    // показ 1 конкретного элемента по номеру маршрута
+    int show_element(int n);
 };
