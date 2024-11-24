@@ -33,7 +33,6 @@ int main() {
 			char last = word[word.size()-1];
 			if (vowels.find_first_of(last) != -1 && vowels.find_first_of(first) != -1) cout << word << ' ' << word.size() << endl;
 			}
-		cout << endl;
 		}
 	in.close();
 	return 0;
