@@ -139,7 +139,7 @@ Keeper& operator--(Keeper& K) {
 // удаление в концe
 Keeper& Keeper::operator--(int) {
     if (this->count == 0) {
-        cout << "Данных нет. Невозможно удалить с конца" << endl;
+        cout << "Данных нет." << endl;
         return *this;
     }
 
@@ -165,12 +165,22 @@ Keeper& Keeper::operator--(int) {
 // удаление конкретного элемента
 Keeper& Keeper::delete_element(int n) {
 
+    if (this->count == 0) {
+        cout << "Данных нет." << endl;
+        return *this;
+    }
+
     Element* temp = head;
     Element* temp1;
 
     while (temp->data->getNumber() != n) {
         temp1 = temp;
         temp = temp->next;
+    }
+
+    if (temp == head) {
+        this->operator--(0);
+        return *this;
     }
 
     Element* toDelete = temp;
@@ -189,6 +199,11 @@ Keeper& Keeper::delete_element(int n) {
 
 // изменение информации конкретного элемента
 Keeper& Keeper::edit_element(int n) {
+
+    if (this->count == 0) {
+        cout << "Данных нет." << endl;
+        return *this;
+    }
 
     Element* temp = head;
     while(temp->data->getNumber()!=n) {
@@ -252,8 +267,14 @@ void Keeper::load_from_file(const string& filename) {
 
         if (mover) {
             mover->load_from_file(in);
-            cout << "Объект добавлен в контейнер" << endl;
-            this->add(mover);
+            int res_of_searh = this->show_element(mover->getNumber());
+            if (res_of_searh) {
+                cout << "Маршрут с таким номером уже существует!" << endl;
+            }
+            else {
+                this->add(mover);
+                cout << "Объект добавлен в контейнер" << endl;
+            }
         }
     }
 
@@ -307,7 +328,7 @@ void Keeper::sort_trains_by_number() {
     }
 }
 
-// изменение информации конкретного элемента
+// поиск элемента
 int Keeper::show_element(int n) {
 
     for (Element* i = head; i != nullptr; i = i->next) {
